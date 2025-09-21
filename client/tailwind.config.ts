@@ -2,7 +2,7 @@
 export default {
   content: [
     "./index.html",
-    "./src//*.{js,ts,jsx,tsx,ts}" // covers all cases
+    "./src/**/*.{js,ts,jsx,tsx,ts}" // covers all cases
   ],
   theme: {
     extend: {
