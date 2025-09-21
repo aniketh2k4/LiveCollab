@@ -1,39 +1,35 @@
 import react from "@vitejs/plugin-react"
-import { fileURLToPath, URL } from "url"
 import { defineConfig } from "vite"
+import { fileURLToPath, URL } from "url"
 
-// https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react()],
-base: "/",
-    build: {
-        chunkSizeWarningLimit: 1600,
-        rollupOptions: {
-            output: {
-                manualChunks(id) {
-                    if (id.includes("node_modules")) {
-                        return id
-                            .toString()
-                            .split("node_modules/")[1]
-                            .split("/")[0]
-                            .toString()
-                    }
-                },
-            },
+  plugins: [react()],
+  base: "/", // ✅ important for Vercel
+
+  build: {
+    chunkSizeWarningLimit: 1600, // optional: avoid warnings
+    rollupOptions: {
+      output: {
+        // ✅ safer chunk splitting
+        manualChunks: {
+          react: ["react", "react-dom"],
         },
+      },
     },
-    resolve: {
-        alias: [
-            {
-                find: "@",
-                replacement: fileURLToPath(new URL("./src", import.meta.url)),
-            },
-        ],
+  },
+
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-    preview: {
-        port: 5173
-    },
-    server:{
-        open: true,
-    }
+  },
+
+  server: {
+    open: true,
+    port: 5173,
+  },
+
+  preview: {
+    port: 5173,
+  },
 })
